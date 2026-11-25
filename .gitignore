@@ -1,0 +1,24 @@
+# zależności i build
+node_modules/
+dist/
+coverage/
+
+# lokalne konfiguracje i sekrety — NIGDY do repozytorium
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# lokalna baza SQLite
+*.db
+*.sqlite3
+
+# system / edytory
+.DS_Store
+Thumbs.db

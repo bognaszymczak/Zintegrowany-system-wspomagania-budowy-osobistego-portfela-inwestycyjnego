@@ -1,0 +1,451 @@
+/* ==========================================================================
+   Wykresy i drobne wizualizacje.
+   Kolory serii wykresów liniowych przychodzą z components/charts/colors.ts;
+   tutaj są tylko style tekstów, siatek i pasków.
+   ========================================================================== */
+
+/* ---------- wspólne: wykresy rysowane w SVG ---------- */
+.chart {
+  width: 100%;
+  min-width: 0;
+}
+.chart svg {
+  display: block;
+  max-width: 100%;
+  overflow: visible;
+}
+.chart__grid {
+  stroke: var(--line);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.chart__tick {
+  fill: var(--muted-2);
+  font-size: 12px;
+  font-weight: 500;
+}
+.chart__crisis {
+  fill: var(--amber);
+  fill-opacity: 0.16;
+}
+.chart__crisis-label {
+  fill: var(--amber-ink-2);
+  font-size: 11px;
+  font-weight: 700;
+}
+.chart__goal-label {
+  fill: var(--amber-ink-2);
+  font-size: 12.5px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.chart__end {
+  fill: var(--muted);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.chart__end--strong {
+  fill: var(--ink);
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+/* ---------- pierścień i legenda ---------- */
+.donut {
+  display: block;
+  flex: none;
+}
+.donut__big {
+  fill: var(--ink);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.donut__small {
+  fill: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14.5px;
+}
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.legend__dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  /* jasne kolory (gotówka) potrzebują cienkiej ramki, żeby było je widać na białym tle */
+  box-shadow: inset 0 0 0 1px rgba(14, 27, 38, 0.18);
+}
+.legend__name {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink-2);
+}
+.legend b {
+  font-weight: 800;
+}
+
+/* ---------- skala ryzyka 1–7 ---------- */
+.riskscale {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.riskscale__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.riskscale__head b {
+  font-size: 16px;
+  color: var(--ink);
+}
+.riskscale__bar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+}
+.riskscale__bar span {
+  display: block;
+  height: 10px;
+  border-radius: 99px;
+  background: var(--line);
+}
+.riskscale__bar span[data-on='true'] {
+  background: #4d9097;
+}
+.riskscale__bar span[data-now='true'] {
+  height: 16px;
+  background: var(--teal-900);
+}
+
+/* ---------- „N na 100” ---------- */
+.dotgrid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  max-width: 230px;
+}
+.dotgrid span {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--line);
+}
+.dotgrid span[data-on='true'] {
+  background: var(--amber);
+  box-shadow: inset 0 0 0 1.5px rgba(122, 65, 0, 0.35);
+}
+
+/* ---------- „wodospad”: skąd bierze się zmiana szansy na stratę ---------- */
+.waterfall {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.waterfall__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) 64px;
+  align-items: center;
+  gap: 8px 14px;
+  font-size: 14.5px;
+}
+.waterfall__label {
+  min-width: 0;
+  color: var(--ink-2);
+  line-height: 1.35;
+}
+.waterfall__row--start .waterfall__label,
+.waterfall__row--end .waterfall__label {
+  font-weight: 800;
+  color: var(--ink);
+}
+.waterfall__track {
+  position: relative;
+  display: block;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--bg);
+}
+.waterfall__bar {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 4px;
+  background: var(--teal);
+}
+.waterfall__row--end .waterfall__bar {
+  background: var(--teal-900);
+}
+.waterfall__bar--up {
+  background: var(--amber);
+}
+.waterfall__bar--down {
+  background: #7fb6bb;
+}
+.waterfall__value {
+  font-size: 15px;
+  font-weight: 800;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ---------- udział w pieniądzach a udział w ryzyku ---------- */
+.contrib {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.contrib__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.contrib__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.contrib__key {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+.contrib__key--money,
+.contrib__fill--money {
+  background: #a9c6de;
+}
+.contrib__key--risk,
+.contrib__fill--risk {
+  background: var(--teal-900);
+}
+.contrib__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contrib__name {
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.contrib__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.contrib__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 10px;
+}
+.contrib__row b {
+  font-size: 14.5px;
+  font-weight: 800;
+  text-align: right;
+}
+.contrib__track {
+  display: block;
+  height: 12px;
+  border-radius: 99px;
+  background: var(--line-2);
+  overflow: hidden;
+}
+.contrib__fill {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  border-radius: 99px;
+}
+
+/* ---------- porównanie zakresów wyników kilku portfeli ---------- */
+.rc {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.rc__row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 132px;
+  align-items: center;
+  gap: 4px 16px;
+}
+.rc__name {
+  font-size: 16px;
+  font-weight: 800;
+}
+.rc__value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  text-align: right;
+  white-space: nowrap;
+}
+.rc__track {
+  position: relative;
+  display: block;
+  height: 32px;
+}
+.rc__bar {
+  position: absolute;
+  top: 8px;
+  height: 16px;
+  min-width: 4px;
+  border-radius: 99px;
+  background: var(--teal-300);
+  box-shadow: inset 0 0 0 1px rgba(13, 92, 99, 0.35);
+}
+.rc__median {
+  position: absolute;
+  top: 3px;
+  width: 4px;
+  height: 26px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--teal-900);
+  box-shadow: 0 0 0 2px #fff;
+}
+.rc__line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 2px dashed var(--muted-2);
+  opacity: 0.7;
+}
+.rc__line--paid {
+  border-left-color: var(--muted-2);
+}
+.rc__line--goal {
+  border-left-color: #c77a0a;
+  opacity: 0.95;
+}
+.rc__track--head {
+  height: 30px;
+}
+.rc__flag {
+  position: absolute;
+  bottom: 2px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  color: var(--ink-2);
+}
+.rc__flag--paid {
+  background: var(--line-2);
+}
+.rc__flag--goal {
+  background: var(--amber-50);
+  color: var(--amber-ink-2);
+}
+.rc__track--axis {
+  height: 20px;
+  border-top: 1px solid var(--line);
+}
+.rc__tick {
+  position: absolute;
+  top: 4px;
+  font-size: 12px;
+  color: var(--muted-2);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.rc__tick:last-child {
+  transform: translateX(-80%);
+}
+
+@media (max-width: 640px) {
+  .rc__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px 12px;
+  }
+  .rc__row .rc__track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .rc__row .rc__name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .rc__row .rc__value {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .rc__row--head,
+  .rc__row--axis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rc__row--head > span,
+  .rc__row--axis > span {
+    display: none;
+  }
+  .rc__row--head .rc__track,
+  .rc__row--axis .rc__track {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .rc__flag {
+    font-size: 11.5px;
+    padding: 2px 6px;
+  }
+  .waterfall__row {
+    grid-template-columns: minmax(0, 1fr) 60px;
+  }
+  .waterfall__row .waterfall__track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .waterfall__bar,
+  .contrib__fill,
+  .rc__bar,
+  .crisis__fill {
+    transition:
+      width 0.25s ease,
+      left 0.25s ease;
+  }
+}
+
+/* wykresy w wydruku: bez dodatkowych cieni */
+@media print {
+  .rc__median {
+    box-shadow: none;
+  }
+}

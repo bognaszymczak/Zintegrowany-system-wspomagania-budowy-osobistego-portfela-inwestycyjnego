@@ -1,0 +1,112 @@
+### Próbnik endpointów — rozszerzenie VS Code „REST Client” (humao.rest-client).
+### Kliknij „Send Request” nad wybraną linią ###. Ciasteczko sesji REST Client zapamiętuje sam,
+### więc najpierw wykonaj logowanie, a potem pozostałe zapytania (od góry do dołu).
+### Najpierw: uruchom serwer (uvicorn app.main:app --reload --port 8000) i dane (python -m app.jobs.ingest --demo-seed).
+
+@host = http://localhost:8000/api
+
+### 0. Czy serwer żyje?
+GET {{host}}/health
+
+### 1a. Logowanie kontem demo (utworzonym przez --demo-seed)
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{ "email": "demo@horyzont.pl", "password": "demo-haslo-12345" }
+
+### 1b. Albo: rejestracja nowego konta
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Ola",
+  "email": "ola@przyklad.pl",
+  "password": "bardzo-dlugie-haslo-1",
+  "adultConfirmed": true,
+  "acceptTerms": true,
+  "acceptSimulation": true,
+  "marketingOptIn": false
+}
+
+### 2. Kto jest zalogowany?
+GET {{host}}/auth/me
+
+### 3. Formularz wstępny — dokładnie to, co wysyła front po 5. kroku
+# @name profile
+POST {{host}}/profile
+Content-Type: application/json
+
+{
+  "goal": "mieszkanie",
+  "horizon": "5do10",
+  "targetAmountPLN": 100000,
+  "startBand": "5do20k",
+  "monthlyBand": "300do1000",
+  "cushion": "tak",
+  "income": "staly",
+  "loans": "do20",
+  "acceptableDropPct": 20,
+  "reaction": "czekam",
+  "riskPreference": "ryzyko",
+  "experience": ["lok", "etf"],
+  "quiz": { "q1": "b", "q2": "b", "q3": "b" },
+  "excludedSectors": [],
+  "esgPreferred": false,
+  "instruments": "etf",
+  "displayCurrency": "pln"
+}
+
+### 4. Trzy propozycje portfeli (poziom z odpowiedzi powyżej)
+@profileId = {{profile.response.body.profileId}}
+@level = {{profile.response.body.level}}
+
+GET {{host}}/proposals?profileId={{profileId}}&level={{level}}
+
+### 5. Dane rynkowe: założenia i symulacja wsteczna
+GET {{host}}/market/assumptions
+
+###
+GET {{host}}/market/backtest?weights=18,15,5,20,10,15,17
+
+### 6. Ocena ryzyka własnego wyboru (propozycja „Równowaga” z poziomu 3 po przesunięciu suwaków)
+# @name assessment
+POST {{host}}/risk-assessment
+Content-Type: application/json
+
+{
+  "profileId": "{{profileId}}",
+  "level": 3,
+  "proposalId": "L3-rownowaga",
+  "weights": [20, 20, 6, 18, 8, 15, 13]
+}
+
+### 7. Zapis wyboru
+# @name choice
+POST {{host}}/choices
+Content-Type: application/json
+
+{
+  "profileId": "{{profileId}}",
+  "level": 3,
+  "proposalId": "L3-rownowaga",
+  "weights": [20, 20, 6, 18, 8, 15, 13]
+}
+
+### 8. Usunięcie zapisanego wyboru
+@choiceId = {{choice.response.body.id}}
+
+DELETE {{host}}/choices/{{choiceId}}
+
+### 9. Błąd walidacji (udziały nie sumują się do 100) — front dostaje {code, message, fields}
+POST {{host}}/risk-assessment
+Content-Type: application/json
+
+{
+  "profileId": "{{profileId}}",
+  "level": 3,
+  "proposalId": "L3-rownowaga",
+  "weights": [20, 20, 6, 18, 8, 15, 14]
+}
+
+### 10. Wylogowanie
+POST {{host}}/auth/logout

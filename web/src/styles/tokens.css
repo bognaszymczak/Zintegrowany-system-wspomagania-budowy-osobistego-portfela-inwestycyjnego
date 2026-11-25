@@ -1,0 +1,51 @@
+/*
+  Tokeny projektu: kolory, promienie, cienie.
+  Wszystkie kolory w aplikacji pochodzą stąd — zmiana palety to zmiana tego jednego pliku.
+  Kontrasty sprawdzone pod WCAG AA (tekst >= 4,5:1; obramowania kontrolek >= 3:1).
+*/
+:root {
+  --font: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* tekst */
+  --ink: #0e1b26;
+  --ink-2: #27394a;
+  --muted: #44566a;
+  --muted-2: #5b6b7b;
+
+  /* powierzchnie i linie */
+  --bg: #f3f6f8;
+  --surface: #ffffff;
+  --surface-2: #fbfcfd;
+  --line: #d9e1e8;
+  --line-2: #e9eef2;
+  --line-strong: #7d8fa0;
+
+  /* marka */
+  --teal: #0d5c63;
+  --teal-900: #0a3a41;
+  --teal-800: #08434a;
+  --teal-100: #e3f0f1;
+  --teal-200: #cfe6e8;
+  --teal-300: #bcd9dc;
+  --amber: #f2a33a;
+  --amber-50: #fff4e0;
+  --amber-200: #f2c887;
+  --amber-ink: #5c3300;
+  --amber-ink-2: #7a4100;
+
+  /* błąd */
+  --danger: #b42318;
+  --danger-50: #fef3f2;
+  --danger-200: #fda29b;
+  --danger-ink: #7a271a;
+
+  /* klasy aktywów (wykresy) */
+  --c-equity: #1d4f7c;
+  --c-bonds: #5b97cf;
+  --c-gold: #e8a92e;
+  --c-cash: #cbd3db;
+
+  --radius-card: 20px;
+  --shadow-card: 0 1px 2px rgba(14, 27, 38, 0.05), 0 8px 24px rgba(14, 27, 38, 0.06);
+  --shadow-pop: 0 1px 2px rgba(14, 27, 38, 0.06), 0 16px 48px rgba(14, 27, 38, 0.1);
+}

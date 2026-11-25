@@ -1,0 +1,601 @@
+/* ==========================================================================
+   Formularz wstępny (kreator 5 kroków)
+   ========================================================================== */
+
+.wizard {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* ---------- lewy panel ---------- */
+.wizard__rail {
+  flex: 1 1 260px;
+  max-width: 300px;
+  min-width: 0; /* bez tego poziomy pasek kroków na telefonie rozpycał całą stronę */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.wizard__rail-head h2 {
+  font-size: 20px;
+  font-weight: 800;
+}
+.wizard__rail-head p {
+  margin-top: 4px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.rail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rail__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.rail__item:disabled {
+  cursor: default;
+}
+.rail__item--now {
+  background: var(--teal-100);
+}
+.rail__dot {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  background: var(--surface);
+  color: var(--muted-2);
+  border: 1.5px solid #9aabba;
+}
+.rail__item--done .rail__dot {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+.rail__item--now .rail__dot {
+  background: var(--teal-900);
+  border-color: var(--teal-900);
+  color: #fff;
+}
+.rail__text {
+  display: flex;
+  flex-direction: column;
+}
+.rail__title {
+  font-size: 15.5px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+.rail__item--now .rail__title {
+  font-weight: 800;
+}
+.rail__sub {
+  font-size: 13.5px;
+  color: var(--muted-2);
+  font-weight: 500;
+}
+
+.why-box {
+  background: var(--teal-100);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.why-box__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--teal-800);
+  font-weight: 800;
+  font-size: 15px;
+}
+.why-box p {
+  font-size: 14.5px;
+  color: #27495a;
+}
+
+.rail-tools {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+/* ---------- karta z pytaniami ---------- */
+.wizard__card {
+  flex: 3 1 580px;
+  min-width: 0;
+  overflow: hidden;
+}
+.wizard__top {
+  padding: 28px 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.wizard__top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.save-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--muted-2);
+}
+.save-badge--unavailable {
+  color: var(--amber-ink-2);
+}
+
+.wizard__body {
+  padding: 24px 32px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.wizard__intro h1 {
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.wizard__intro p {
+  margin-top: 6px;
+  color: var(--muted);
+}
+.wizard__footer {
+  margin-top: 20px;
+  padding: 20px 32px 28px;
+  border-top: 1px solid var(--line-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ---------- pytanie ---------- */
+.question {
+  display: block;
+}
+.question > * + * {
+  margin-top: 12px;
+}
+.question__title {
+  display: block;
+  padding: 0;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+.question__note {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted-2);
+}
+.question__hint {
+  font-size: 14px;
+  color: var(--muted-2);
+}
+.question--field > * + * {
+  margin-top: 8px;
+}
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.split > * {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.split > *:last-child {
+  flex: 2 1 320px;
+}
+
+/* ---------- odpowiedzi (radio / checkbox wyglądające jak przyciski) ---------- */
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.choices--cards,
+.choices--wide {
+  display: grid;
+  gap: 12px;
+}
+.choices--cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+}
+.choices--wide {
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+}
+.choices--list {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+
+.choice {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+/* Prawdziwy input leży na całej powierzchni przycisku (niewidoczny) — klik i dotyk trafiają w niego. */
+.choice input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.choice__face {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-height: 44px;
+  padding: 0 18.5px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.choice:hover .choice__face {
+  border-color: var(--teal);
+}
+.choice input:checked + .choice__face {
+  border: 2px solid var(--teal);
+  padding: 0 18px;
+  background: var(--teal-100);
+  color: var(--teal-800);
+  font-weight: 800;
+}
+.choice input:focus-visible + .choice__face {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+.question[data-invalid='true'] .choice__face {
+  border-color: var(--danger);
+}
+
+/* karty z ikoną */
+.choice--cards .choice__face {
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14.5px 16.5px;
+  border-radius: 14px;
+  text-align: left;
+}
+.choice--cards input:checked + .choice__face {
+  padding: 14px 16px;
+}
+.choice__icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--teal-100);
+  color: var(--teal);
+}
+.choice input:checked + .choice__face .choice__icon {
+  background: var(--teal);
+  color: #fff;
+}
+.choice__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.choice--cards .choice__label {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.choice__sub {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* szerokie przyciski (wybór A/B) */
+.choice--wide .choice__face {
+  min-height: 64px;
+  padding: 12px 18.5px;
+  font-size: 16px;
+}
+.choice--wide input:checked + .choice__face {
+  padding: 12px 18px;
+}
+
+/* lista z okrągłymi przyciskami radiowymi (mini-quiz, rodzaj instrumentów) */
+.choice--list .choice__face,
+.choice--list input:checked + .choice__face {
+  min-height: 0;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 400;
+  align-items: flex-start;
+  gap: 10px;
+}
+.choice--list input:focus-visible + .choice__face {
+  outline: 0;
+}
+.choice__radio {
+  flex: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+}
+.choice input:checked + .choice__face .choice__radio {
+  border: 2px solid var(--teal);
+}
+.choice input:checked + .choice__face .choice__radio::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+.choice--list input:focus-visible + .choice__face .choice__radio {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+.choice--list:hover .choice__radio {
+  border-color: var(--teal);
+}
+.choice--list .choice__label {
+  font-size: 16px;
+  line-height: 1.4;
+}
+.panel .choice--list .choice__label {
+  font-size: 15px;
+}
+
+/* ---------- pole kwoty ---------- */
+.money-input {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 14px;
+  gap: 8px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.money-input:focus-within {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+.money-input input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+}
+.money-input__unit {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.question[data-invalid='true'] .money-input {
+  border-color: var(--danger);
+}
+
+/* ---------- pola wyboru (checkbox) ---------- */
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+.checks--single {
+  padding-top: 6px;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.check input {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--teal);
+}
+
+/* ---------- suwak spadku ---------- */
+.slider-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: var(--bg);
+}
+.slider-card__value {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.slider-card__big {
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--teal);
+}
+.slider-card__explain {
+  font-size: 15px;
+  color: var(--muted);
+}
+.slider-card__explain b {
+  color: var(--ink);
+}
+.slider-card__bar {
+  display: flex;
+  height: 14px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--line-2);
+}
+.slider-card__keep {
+  background: var(--teal);
+}
+.slider-card__lose {
+  background: var(--amber);
+}
+.slider-card__range {
+  display: block;
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  accent-color: var(--teal);
+}
+.slider-card__ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ---------- panel (mini-quiz) ---------- */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: var(--bg);
+}
+.panel__title {
+  font-size: 17px;
+  font-weight: 800;
+}
+.panel__sub {
+  font-size: 14px;
+  color: var(--muted);
+}
+.panel .question__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+/* ---------- małe ekrany ---------- */
+@media (max-width: 720px) {
+  .wizard {
+    padding: 20px 16px 48px;
+  }
+  .wizard__rail {
+    flex-basis: 100%;
+    max-width: none;
+  }
+  /* na telefonie lewy panel zamienia się w poziomy pasek numerów kroków */
+  .wizard__rail {
+    gap: 8px;
+  }
+  .wizard__rail-head {
+    display: none; /* tytuł i tak powtarza nagłówek kroku w karcie */
+  }
+  .rail-tools {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0 16px;
+  }
+  .rail {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 2px;
+  }
+  .rail__item {
+    min-height: 44px;
+    width: auto;
+    padding: 6px 12px 6px 8px;
+    white-space: nowrap;
+  }
+  .rail__sub {
+    display: none;
+  }
+  .why-box {
+    display: none;
+  }
+}
+@media (max-width: 560px) {
+  .wizard__top {
+    padding: 20px 20px 0;
+  }
+  .wizard__body {
+    padding: 20px 20px 8px;
+    gap: 24px;
+  }
+  .wizard__footer {
+    padding: 16px 20px 20px;
+  }
+  .wizard__intro h1 {
+    font-size: 26px;
+  }
+  .slider-card {
+    padding: 16px;
+  }
+  .slider-card__big {
+    font-size: 38px;
+  }
+}
